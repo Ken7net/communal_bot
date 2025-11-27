@@ -11,8 +11,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-async def _process_update(update):
-    """Асинхронная обработка обновления."""
+async def _handle_webhook(update_data):
+    """Полный асинхронный цикл обработки обновления."""
+    update = Update.de_json(update_data, bot=None)
     app = Application.builder().token(settings.TELEGRAM_BOT_TOKEN).build()
     await app.initialize()
     try:
@@ -24,11 +25,10 @@ async def _process_update(update):
 @require_POST
 def telegram_webhook(request):
     try:
-        update_data = json.loads(request.body.decode("utf-8"))
-        update = Update.de_json(update_data, bot=None)
-        # Один вызов asyncio.run() для всего процесса
-        asyncio.run(_process_update(update))
+        update_data = json.loads(request.body.decode('utf-8'))
+        # Единственный вызов asyncio.run()
+        asyncio.run(_handle_webhook(update_data))
         return HttpResponse('OK')
     except Exception as e:
-        logger.exception("Critical error in webhook")
+        logger.exception("Webhook failed")
         return HttpResponse('Error', status=500)
