@@ -10,8 +10,10 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'communal-bot.onrender.com']
+
 # if config('RENDER_EXTERNAL_HOST', default=''):
 #     ALLOWED_HOSTS.append(config('RENDER_EXTERNAL_HOST'))
+
 RENDER_EXTERNAL_HOST = os.environ.get('RENDER_EXTERNAL_HOST')
 if RENDER_EXTERNAL_HOST:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOST)
