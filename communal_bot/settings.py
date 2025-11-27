@@ -23,7 +23,7 @@ ROOT_URLCONF = 'communal_bot.urls'
 DATABASES = {'default': {
     'ENGINE': 'django.db.backends.postgresql',
     'NAME': config('DB_NAME', default='communal_bot'),
-    'USER': config('DB_USER', default=''),
+    'USER': config('DB_USER', default='communal_bot_db_user1'),
     'PASSWORD': config('DB_PASSWORD', default=''),
     'HOST': config('DB_HOST', default='localhost'),
     'PORT': config('DB_PORT', default='5432'),
