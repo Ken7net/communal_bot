@@ -8,8 +8,11 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-if config('RENDER_EXTERNAL_HOST', default=''):
-    ALLOWED_HOSTS.append(config('RENDER_EXTERNAL_HOST'))
+# if config('RENDER_EXTERNAL_HOST', default=''):
+#     ALLOWED_HOSTS.append(config('RENDER_EXTERNAL_HOST'))
+RENDER_EXTERNAL_HOST = os.environ.get('RENDER_EXTERNAL_HOST')
+if RENDER_EXTERNAL_HOST:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOST)
 
 INSTALLED_APPS = ['bot']
 
