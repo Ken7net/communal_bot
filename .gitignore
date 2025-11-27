@@ -5,3 +5,4 @@ venv/
 .idea/
 .env.local
 .db.sqlite3
+bot/views.py.txt
