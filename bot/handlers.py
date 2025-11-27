@@ -19,23 +19,42 @@ async def _get_or_create_user(telegram_id):
 
 
 # =============== ОСНОВНЫЕ КОМАНДЫ ПОЛЬЗОВАТЕЛЕЙ ===============
+# async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+#     user = await _get_or_create_user(update.effective_user.id)
+#     msg = (
+#         f"Привет! {'Вы — администратор.' if user.is_admin else 'Вы — участник.'}\n\n"
+#         "Основные команды:\n"
+#         "/submit_reading — ввести показания\n"
+#         "/add_payment — внести оплату\n"
+#         "/balance — узнать баланс"
+#     )
+#     if user.is_admin:
+#         msg += (
+#             "\n\nАдмин-команды:\n"
+#             "/add_utility, /set_tariff\n"
+#             "/list_users, /admin_submit_reading и др."
+#         )
+#     await update.message.reply_text(msg)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = await _get_or_create_user(update.effective_user.id)
-    msg = (
-        f"Привет! {'Вы — администратор.' if user.is_admin else 'Вы — участник.'}\n\n"
-        "Основные команды:\n"
-        "/submit_reading — ввести показания\n"
-        "/add_payment — внести оплату\n"
-        "/balance — узнать баланс"
-    )
-    if user.is_admin:
-        msg += (
-            "\n\nАдмин-команды:\n"
-            "/add_utility, /set_tariff\n"
-            "/list_users, /admin_submit_reading и др."
+    try:
+        logger.info(f"✅ START received from Telegram ID: {update.effective_user.id}")
+        user, created = User.objects.get_or_create(
+            telegram_id=update.effective_user.id,
+            defaults={'is_admin': update.effective_user.id in settings.ADMIN_TELEGRAM_IDS}
         )
-    await update.message.reply_text(msg)
+        logger.info(f"✅ User {'created' if created else 'fetched'}: ID={user.telegram_id}, is_admin={user.is_admin}")
+
+        msg = "Привет! Вы — администратор." if user.is_admin else "Привет! Вы — участник."
+        await update.message.reply_text(msg)
+        logger.info("✅ Reply sent successfully")
+
+    except Exception as e:
+        logger.exception("🔥 START handler FAILED with exception:")
+        try:
+            await update.message.reply_text("Ошибка при запуске.")
+        except:
+            pass
 
 
 async def submit_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
