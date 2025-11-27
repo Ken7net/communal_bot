@@ -6,3 +6,4 @@ venv/
 .env.local
 .db.sqlite3
 bot/views.py.txt
+db.sqlite3
