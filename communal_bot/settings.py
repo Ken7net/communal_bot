@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'communal-bot.onrender.com']
 # if config('RENDER_EXTERNAL_HOST', default=''):
 #     ALLOWED_HOSTS.append(config('RENDER_EXTERNAL_HOST'))
 RENDER_EXTERNAL_HOST = os.environ.get('RENDER_EXTERNAL_HOST')
