@@ -1,0 +1,5 @@
+Django>=5.0,<6.0
+python-telegram-bot[async]>=21.0
+psycopg2-binary
+python-decouple
+dj-database-url
